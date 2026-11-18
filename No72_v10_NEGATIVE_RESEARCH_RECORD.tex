@@ -1,0 +1,301 @@
+\documentclass[10pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry,booktabs,array}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\geometry{margin=0.80in,headheight=14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small No.72 / Negative Research Record}
+\fancyhead[R]{\small v1.0 / 18 Nov 2026}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Ga}{\Gamma}
+\newcommand{\capt}{\operatorname{capt}}
+\newcommand{\dist}{\operatorname{dist}}
+\title{A Failed Static-Certificate Route to Capture-Time Bounds on Fibonacci Cubes\\[3pt]
+\large A Qualified Negative Research Record and an Audit}
+\author{Ryutaro Yonezu\\\small Independent research / No.72}
+\date{18 November 2026 --- v1.0 negative research record}
+\begin{document}
+\maketitle
+\begin{center}\fbox{\parbox{0.86\linewidth}{\centering\small
+\textbf{NEGATIVE RESEARCH RECORD -- NOT PEER REVIEWED -- NOVELTY INCONCLUSIVE}\\
+Novelty: inconclusive. No claim of a new capture-time formula.}}
+\end{center}
+\begin{abstract}
+We document a failed attempt to infer short capture-time lower bounds on Fibonacci
+cubes from static distance covering and a delayed-retract condition.
+An elementary construction covers every Fibonacci cube $\Ga_{2m}$ by three
+balls of radius $m-1$, and every $\Ga_{2m+1}$ ($m\ge2$) by four balls
+of the same radius. Together with the established exact cop-number formula, these yield
+infinite families of finite-radius coverings by fewer centers than the number
+of cops required for eventual capture. This comparison is elementary and
+\emph{does not show} that the displayed radii are below the minimum-cop
+capture times in those families; even a single center has finite covering
+radius. At dimension ten, a three-center radius-four covering coexists with the independently
+audited computer-assisted value $\capt(\Ga_{10})=5$ for three cops.
+At dimension eleven, four explicit centers satisfy both the radius-four
+covering requirement and the particular $Q_6$ delayed-retract test, without
+settling whether four-move capture is possible.
+The result is a precise limitation on \emph{these necessary conditions}, not an
+impossibility theorem for all approaches, and not a proof that
+$\capt(\Ga_{11})\ge5$.
+\end{abstract}
+
+\section{Question and prior art}
+Let $\Ga_n$ denote the induced subgraph of the $n$-dimensional hypercube
+on binary strings containing no adjacent $1$'s. We identify a string with
+the integer whose bit $i$ is its coefficient of $2^i$, with $i=0$ the
+least significant coordinate. Cops choose their positions before the robber;
+subsequently the cops move first. Every player may move along one edge or stay.
+We write $c(G)$ for the minimum number of cops with an eventual winning strategy,
+and $\capt_k(G)$ for the least guaranteed number of police moves when $k$ cops
+are available. The usual $\capt(G)$ is $\capt_{c(G)}(G)$.
+
+Huang, Xie and Xu proved the exact formula \cite{hxx2026}
+\begin{equation}\label{eq:cop}
+ c(\Ga_n)=\left\lceil\frac{\lceil n/2\rceil+1}{2}\right\rceil.
+\end{equation}
+The capture-time asymptotic for hypercubes is established by
+Bonato, Gordinowicz, Kinnersley and Pra\l at \cite{bgkp2013}.
+Retracts and finite-horizon capture are established tools in this area
+\cite{bonato2009,over2016}. We therefore do \emph{not} claim that using
+distance covering, a retraction, or a hitting-set certificate is a new technique.
+
+Research No.72 had previously established computer-assisted small-dimensional
+results, including $\capt_3(\Ga_9)=4$ and $\capt_3(\Ga_{10})=5$,
+with independent reimplementations and a separately audited Windows evidence
+package (v0.18). Its earlier purported five-move lower bound for $\Ga_{11}$
+was withdrawn after the last 616 negative instances were found invalid:
+a legal empty responsibility choice for a cop had been omitted. The present
+note \emph{does not revive} that lower bound.
+
+Related structural studies determine the radius and center of Fibonacci cubes \cite{munarini2002}; domination-type invariants and covering-code considerations have also been investigated \cite{azarija2018}. These works constrain claims of priority for elementary covering constructions.\par\smallskip
+
+\section{An explicit geometric covering in every dimension}
+For $C\subseteq V(G)$, define its static covering radius by
+\[
+ R_G(C)=\max_{v\in V(G)}\min_{x\in C}d_G(v,x).
+\]
+The necessary condition for an opening $C$ to win within $t$ police
+moves is $R_G(C)\le t$: a stationary robber cannot be reached otherwise.
+This necessary condition says nothing about a robber who moves.
+
+\begin{lemma}\label{lem:metric}
+For $x,y\in\Ga_n$, the graph distance is the Hamming distance
+$d_{\Ga_n}(x,y)=\mathrm{wt}(x\oplus y)$.
+\end{lemma}
+\begin{proof}
+Every edge flips one coordinate, so Hamming distance is a lower bound.
+Starting at $x$, first remove the $1$ bits absent from $y$, then add the
+$1$ bits present in $y$ and absent from $x$. Deletions preserve legality,
+and each intermediate set of added bits is a subset of the legal $1$ set
+of $y$. This gives a path of exactly $\mathrm{wt}(x\oplus y)$ edges.
+\end{proof}
+
+\begin{theorem}[constant-size ball covers]\label{thm:cover}
+For every integer $m\ge1$,
+\[
+ R_{\Ga_{2m}}(\{0,1,2\})\le m-1.
+\]
+For every $m\ge2$,
+\[
+ R_{\Ga_{2m+1}}(\{0,1,2,20\})\le m-1.
+\]
+All listed centers are distinct legal Fibonacci words in their indicated dimensions.
+\end{theorem}
+\begin{proof}
+Write $w=\mathrm{wt}(v)$ for a legal word $v$. The occupied coordinates
+form an independent set of the path on $n$ coordinate positions.
+
+If $n=2m$, then $w\le m$. For $w\le m-1$, the center $0$
+is within distance $m-1$. For $w=m$, coordinates $0$ and $1$ cannot
+both be zero: the remaining $2m-2$ positions contain at most $m-1$
+nonadjacent ones. Thus $v$ has a one in coordinate $0$ or $1$,
+and $d(v,1)=m-1$ or $d(v,2)=m-1$.
+
+If $n=2m+1$, then $w\le m+1$. The cases $w\le m-1$ and
+$w=m$ with coordinate $0$ or $1$ occupied are covered as before.
+If $w=m$ and both first coordinates are zero, positions
+$2,\ldots,2m$ form a path of odd length $2m-1$; attaining its
+maximum independent-set size $m$ forces exactly coordinates
+$2,4,\ldots,2m$ to be occupied. In particular coordinates $2$ and $4$
+are both occupied. Since $20=2^2+2^4$,
+$d(v,20)=m-2$. Finally $w=m+1$ is possible only for the alternating
+word with ones exactly in positions $0,2,\ldots,2m$.
+It also contains positions $2,4$, so $d(v,20)=m-1$.
+All cases are covered.
+\end{proof}
+
+\begin{corollary}[finite-radius covers below the cop number]\label{cor:gap}
+For every $m\ge6$, $\Ga_{2m}$ admits a radius-$(m-1)$ covering
+with three centers even though $c(\Ga_{2m})>3$.
+For every $m\ge7$, $\Ga_{2m+1}$ admits such a covering with four
+centers even though $c(\Ga_{2m+1})>4$.
+Consequently, these static coverings cannot certify an eventual
+winning cop strategy, let alone a capture-time upper bound.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:cover} supplies the covers. Formula~\eqref{eq:cop}
+gives $c(\Ga_{2m})=\lceil(m+1)/2\rceil>3$ when $m\ge6$,
+and $c(\Ga_{2m+1})=\lceil(m+2)/2\rceil>4$ when $m\ge7$.
+\end{proof}
+
+\noindent\textbf{Scope of the corollary.}
+This is a comparison between the number of covering centers and the cop
+number, not a proved infinite-family inequality between covering radius
+and capture time. Indeed, the single center $0$ covers $\Ga_{2m}$
+with radius $m$ and $\Ga_{2m+1}$ with radius $m+1$, since their
+largest Hamming weights are $m$ and $m+1$, respectively. Theorem
+\ref{thm:cover} improves these elementary one-center radii by just
+one (even case) or two (odd case). In particular, the corollary does
+\emph{not} establish $m-1<\capt(\Ga_n)$ on either infinite family.
+
+\section{Two concrete failed certification routes}
+The corollary yields a cop-number comparison only, not an
+infinite-family capture-time separation. The following two small
+instances explain precisely what failed in No.72.
+
+\begin{proposition}[the dimension-ten separation]\label{prop:ten}
+The opening $\{0,1,2\}$ radius-four covers all $144$ vertices
+of $\Ga_{10}$, but it cannot guarantee capture within four moves.
+Indeed, the inherited independently audited finite result gives
+$\capt_3(\Ga_{10})=5$.
+\end{proposition}
+\begin{proof}
+Take $m=5$ in Theorem~\ref{thm:cover}. The second assertion uses
+the archived v0.18 complete finite-game certificate and its independent
+audit; it does not follow from the covering calculation. The theorem
+provides a self-contained proof of the covering part, whereas the
+capture-time statement retains its explicit computer-assisted dependency.
+\end{proof}
+
+\begin{proposition}[dimension eleven: simultaneous feasibility]\label{prop:eleven}
+Let $C=\{0,1,2,20\}\subseteq\Ga_{11}$ and
+$H=\{x\in\Ga_{11}:x_i=0\text{ for odd }i\}$.
+Then $H\cong Q_6$ is a retract, $c(H)=4$, and
+\[
+ R_{\Ga_{11}}(C)\le4,\qquad
+ \bigl(d(c,H):c\in C\bigr)=(0,0,1,0).
+\]
+Thus both the four-move radius-covering requirement and the
+particular v0.22 delayed-retract necessary condition are simultaneously
+satisfied by $C$.
+\end{proposition}
+\begin{proof}
+The covering follows from Theorem~\ref{thm:cover} with $m=5$.
+The six even-indexed coordinates are independent, and erasing all odd
+coordinates maps legal vertices and edges to legal vertices and edges
+(or stays), fixing $H$ pointwise. It is therefore a retraction onto
+$Q_6$. The standard hypercube cop-number formula gives $c(Q_6)=4$.
+Distances to $H$ count occupied odd coordinates by Lemma~\ref{lem:metric}.
+For the four listed centers these counts are $0,0,1,0$.
+\end{proof}
+
+The v0.22 delayed-retract rule excludes an opening only when some cop
+starts at distance strictly greater than the target turn limit from a
+retract whose cop number equals the number of available cops. Since no
+cop in Proposition~\ref{prop:eleven} is farther than four from $H$,
+that rule excludes none of the four centers. This is a \emph{failure of
+the conjunction of these particular necessary-condition tests to prove
+nonexistence of all four-turn openings}; it is \emph{not} a proof that
+$C$ wins in four moves. A stronger dynamic criterion might still
+eliminate $C$ or all openings.
+
+\section{What the failed route does and does not show}
+We record the outcome of the final research trial without changing the
+game's currently unresolved dimension-eleven status.
+\begin{center}
+\small
+\begin{tabular}{p{0.58\linewidth}p{0.29\linewidth}}
+\toprule
+Claim or verification target & Status \\
+\midrule
+Explicit even/odd infinite-family static covers & Proved (elementary) \\
+Covering with fewer centers than required cops & Proved using known cop-number formula \\
+$\Ga_{10}$ static/dynamic separation & Cover proved; finite game audited in v0.18 \\
+Infinite-family radius below $\capt(\Ga_n)$ & \textbf{Not established} \\
+$\Ga_{11}$: cover and specific delayed-retract test both pass & Proved \\
+$\capt(\Ga_{11})\ge5$ & \textbf{Not proved} \\
+All possible structural lower-bound methods fail & \textbf{Not claimed} \\
+Originality of the new presentation or formulas & Inconclusive \\
+Peer review / novelty assessment & None / inconclusive \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The inherited bound remains
+\[
+ 4\le\capt(\Ga_{11})\le17,
+\]
+with the limitations of the inherited lower-bound evidence unchanged.
+The withdrawn v0.8 five-move argument is invalid and must not be quoted
+as proof. Our present negative result is about \emph{method adequacy}, not
+about the exact value of $\capt(\Ga_{11})$.
+
+\section{Reproducibility and novelty assessment}
+The accompanying Python verifier constructs each $\Ga_n$ and performs
+an independent breadth-first-search distance check for the listed centers
+at every dimension $2\le n\le19$ for which the stated construction applies.
+It additionally checks the $233$ vertices of $\Ga_{11}$, the $64$-vertex
+retract $H$, and the four distances appearing in
+Proposition~\ref{prop:eleven}. It checks SHA256 hashes of frozen
+prior-study evidence. The general results rely on the written proofs;
+finite testing is only a sanity check. The verifier does \emph{not}
+rerun a four-cop $\Ga_{11}$ minimax game or independently prove the
+archived $\Ga_{10}$ capture-time assertion.
+
+\textbf{Novelty: INCONCLUSIVE.} This note's elementary ball covers and
+the logical distinction between distance covering and winning pursuit
+may be implicit in established covering-code and pursuit-evasion
+literature. The author claims no priority and no new capture-time formula.
+References have been checked selectively, not exhaustively.
+A future mathematical paper would require a sufficiently distinct
+result and a separate novelty review. The appropriate classification of
+this draft is a negative research record, not a validated discovery of
+a universal no-go theorem.
+
+\vspace{3pt}\noindent\textbf{Research disposition.}
+No.72, version v1.0 (negative research record): \textbf{not peer reviewed; novelty inconclusive}.
+The static/retract route is discontinued for lack of leverage.
+This record is intended to document a failed proof approach, not a new lower bound for $\Ga_{11}$ or an established priority claim.
+\par\smallskip
+\noindent\textcopyright\ 2026 Ryutaro Yonezu. All rights reserved.
+
+\begin{thebibliography}{9}
+\bibitem{hxx2026}
+Z. Huang, Y.-T. Xie, and S.-J. Xu,
+\emph{Cop numbers for subclasses of partial cubes},
+arXiv:2608.25416 (2026), \url{https://arxiv.org/html/2608.25416}.
+\bibitem{munarini2002}
+E. Munarini and N. Zagaglia Salvi,
+\emph{Structural and enumerative properties of the Fibonacci cubes},
+Discrete Mathematics 255 (2002), 317--324,
+\url{https://doi.org/10.1016/S0012-365X(01)00407-1}.
+\bibitem{azarija2018}
+J. Azarija, S. Klav\v{z}ar, Y. Rho, and S. Sim,
+\emph{On domination-type invariants of Fibonacci cubes and hypercubes},
+Ars Mathematica Contemporanea 14 (2018), 387--395,
+\url{https://doi.org/10.26493/1855-3974.1172.bae}.
+\bibitem{bgkp2013}
+A. Bonato, P. Gordinowicz, W. B. Kinnersley, and P. Pra\l at,
+\emph{The capture time of the hypercube},
+Electronic Journal of Combinatorics 20(2), P24 (2013),
+\url{https://doi.org/10.37236/2921}.
+\bibitem{bonato2009}
+A. Bonato, G. Hahn, P. A. Golovach, and J. Kratochv\'il,
+\emph{The capture time of a graph},
+Discrete Mathematics 309 (2009), 5588--5595,
+\url{https://doi.org/10.1016/j.disc.2008.04.004}.
+\bibitem{over2016}
+A. Bonato et al., \emph{The game of overprescribed Cops and Robbers played on graphs},
+arXiv:1611.07592 (2016), \url{https://arxiv.org/abs/1611.07592}.
+\end{thebibliography}
+\end{document}

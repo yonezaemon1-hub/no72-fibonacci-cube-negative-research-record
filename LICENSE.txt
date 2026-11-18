@@ -1,0 +1,2 @@
+Copyright (c) 2026 Ryutaro Yonezu. All rights reserved.
+No license to reuse, modify, redistribute, or commercialize is granted without permission.
